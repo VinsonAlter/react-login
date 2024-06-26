@@ -35,17 +35,40 @@ import axios from 'axios'
 
 export default function Todo() {
     // const [todos, setTodos] = useState([])
-    const [token, setToken] = useState(null)
-    const [user, setUser] = useState(null)
+    // const [token, setToken] = useState(null)
+    // const [user, setUser] = useState(null)
     // const [logout, setLogOut] = useState(true)
     const baseLogout = 'http://127.0.0.1:8000/api/logout'
 
     const location = useLocation()
-    
-    useEffect(() => {
-        setToken(location.state.token)
-        setUser(location.state.user)
-    }, [location])
+
+    let fetchToken
+
+    let fetchUser
+
+    // useEffect(() => {
+    //     setToken(location.state.token)
+    //     setUser(location.state.user)
+    // }, [location])
+
+    // console.log(location)
+    // you use history push ok?
+    // useEffect(() => {
+    //     if (/* your condition */) {
+    //       history.push('/new-route');
+    //     }
+    //   }, []);
+
+    const [token, setToken] = useState(() => {
+        fetchToken = window.localStorage.getItem('token')
+        return fetchToken !== null ? JSON.parse(fetchToken) : null;
+      }
+    )
+
+    const [user, setUser] = useState(() => {
+        fetchUser = window.localStorage.getItem('user')
+        return fetchUser !== null ? JSON.parse(fetchUser) : null;
+    })
 
     const handleLogout = (token, user) => {
         let ids = {
@@ -63,6 +86,7 @@ export default function Todo() {
         })
     }
 
+    // if(location.state.prevPath === '/login') {
     if(token && user) {
         return (
             <>
@@ -74,6 +98,10 @@ export default function Todo() {
     } else {
         return <Navigate to='/login' replace/>
     }
+        
+    // } else {
+    //     return <Navigate to='/login' replace/>
+    // }
     
 
     // const token = location.state.token

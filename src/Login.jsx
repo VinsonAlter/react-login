@@ -1,21 +1,27 @@
 import { useState, useEffect } from 'react'
 // it seems using Redirect to can pass a props as well
-import {Form, useActionData, Navigate, redirect, useNavigate} from 'react-router-dom'
+import {Form, useActionData, useLocation, Navigate, redirect, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 
 export default function Login() {
   // let's try making login form via tailwind
   // yea, i think i should pass the props here via useActionData()
   const data = useActionData()
-
-  const navigate = useNavigate()
+  // const location = useLocation()
+  // const navigate = useNavigate()
 
   if(data && data.login) {
+    useEffect(() => {
+      window.localStorage.setItem('token', JSON.stringify(data.login.token));
+      window.localStorage.setItem('user', JSON.stringify(data.login.user));
+    }, [data.login])
     // still no idea how to pass the token though, hmmm...
     // return <Navigate to='/' token={data.token} replace/>
     // return (<p>{data.login.token} {data.login.user}</p>)
     // console.log(data.login.token)
-    navigate('/', {state: {token: data.login.token, user: data.login.user}, replace: true})
+    // set window.localStorage here...
+    // navigate('/', {state: {token: data.login.token, user: data.login.user, prevPath: location.pathname}, replace: true})
+    return <Navigate to='/' replace/>
     // navigate('/', {state: data.token})
   } else {
     return (
