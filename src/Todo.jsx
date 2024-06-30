@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import {Navigate, useActionData, Form, useLocation} from 'react-router-dom'
+import {Alert} from 'flowbite-react'
 import axios from 'axios'
 
 // the only way is using useEffect at this part
@@ -70,6 +71,8 @@ export default function Todo() {
         return fetchUser !== null ? JSON.parse(fetchUser) : null;
     })
 
+    const [showAlert, setShowAlert] = useState(true)
+
     const handleLogout = (token, user) => {
         let ids = {
             'id': user
@@ -80,16 +83,50 @@ export default function Todo() {
                 'Content-Type': 'application/json'
             }
         }).then(function (response) {
+            // remember to empty the localStorage as well
             setToken(null)
             setUser(null)
+            window.localStorage.removeItem('token')
+            window.localStorage.removeItem('user');
+            // useEffect(() => {
+            //     window.localStorage.removeItem('token')
+            //     window.localStorage.removeItem('user');
+            // }, [token, user])
             // setLogOut(true)
         })
     }
 
     // if(location.state.prevPath === '/login') {
     if(token && user) {
+        // just use flowbite react Component to make my life easier
         return (
             <>
+                {/* <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                    <span class="font-medium">Berhasil Login!</span>
+                </div> */}
+                {showAlert ? (
+                    <Alert color="success" onDismiss={() => setShowAlert(false)}>
+                        <span className="font-medium">Berhasil Login!</span>
+                    </Alert>
+                ) : ''}
+                {/* <Alert color="success" onDismiss={() => alert('Alert dismissed!')}>
+                    <span className="font-medium">Berhasil Login!</span>
+                </Alert> */}
+                {/* <div id="alert-3" class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                    <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <div class="ms-3 text-sm font-medium">
+                        A simple info alert with an <a href="#" class="font-semibold underline hover:no-underline">example link</a>. Give it a click if you like.
+                    </div>
+                    <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-3" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                    </button>
+                </div> */}
                 <h1>{token}</h1>
                 <h1>{user}</h1>
                 <button onClick={() => handleLogout(token, user)}>Log Out</button>
