@@ -88,6 +88,8 @@ export default function Todo() {
             setUser(null)
             window.localStorage.removeItem('token')
             window.localStorage.removeItem('user');
+            // then, i set a logout function here
+            window.localStorage.setItem('logout', true)
             // useEffect(() => {
             //     window.localStorage.removeItem('token')
             //     window.localStorage.removeItem('user');
