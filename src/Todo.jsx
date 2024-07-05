@@ -103,14 +103,17 @@ export default function Todo() {
         // just use flowbite react Component to make my life easier
         return (
             <>
-                {showAlert ? (
-                    <Alert color="success" onDismiss={() => setShowAlert(false)}>
-                        <span className="font-medium">Berhasil Login!</span>
-                    </Alert>
-                ) : ''}
-                <h1>{token}</h1>
-                <h1>{user}</h1>
-                <button onClick={() => handleLogout(token, user)}>Log Out</button>
+                <div className="relative">
+                    {showAlert ? (
+                        <Alert color="success" onDismiss={() => setShowAlert(false)}>
+                            <span className="font-medium">Berhasil Login!</span>
+                        </Alert>
+                        // <div class="flex flex-col gap-2 p-4 text-sm border-green-500 bg-green-100 text-green-700 dark:bg-green-200 dark:text-green-800 rounded-lg" role="alert"><div class="flex items-center" data-testid="flowbite-alert-wrapper"><div><span class="font-medium">Berhasil Login!</span></div><button aria-label="Dismiss" class="-m-1.5 ml-auto inline-flex h-8 w-8 rounded-lg p-1.5 focus:ring-2 bg-green-100 text-green-500 hover:bg-green-200 focus:ring-green-400 dark:bg-green-200 dark:text-green-600 dark:hover:bg-green-300" type="button"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" class="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button></div></div>
+                    ) : ''}
+                    <h1>{token}</h1>
+                    <h1>{user}</h1>
+                    <button className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => handleLogout(token, user)}>Log Out</button>
+                </div>
             </>
         )
     } else {
