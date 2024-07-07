@@ -139,14 +139,30 @@ export default function Todo() {
             completed: false
         }
 
-        await axios.post(baseURL, {
+        await axios.post(baseURL,  data,  {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
-            },
-        }, data,  {
-            
-        })
+            }
+          }).then(function (response) {
+            // let todoData = JSON.parse(response.data.todo);
+            setTodos([
+            ...todos, 
+            {
+              // previous for jsonplaceholder
+              // user_id: todoData[0].user_id,
+              // id: todoData[0].id,
+              // title: todoData[0].title,
+              // completed: todoData[0].completed
+              // testing to insert data for  
+      
+              // receiving data from laravel api
+              user_id: response.data.data.user_id,
+              id: response.data.data.id,
+              title: response.data.data.title,
+              completed: response.data.data.completed
+            }])
+          }).catch((err) => { console.log('Axios Error:', err); })
     }
 
     async function handleChange(nextTodo) {
@@ -154,13 +170,12 @@ export default function Todo() {
         // update the jsonplaceholder via axios put
         // console.log(baseURL + '/' + nextTodo.id)
         await axios.put(baseURL + '/' + nextTodo.id, {
+            title: nextTodo.title
+        }, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
-            },
-            title: nextTodo.title
-        },  {
-          // withCredentials: true,
+            }
         }).then(function (response) {
           // console.log(response)
           setTodos(todos.map(todo => {
@@ -185,15 +200,14 @@ export default function Todo() {
     }
 
     async function toggleTodo(nextTodo) {
+        // console.log(nextTodo.completed)
         await axios.put(baseURL + '/' + nextTodo.id, {
+          completed: nextTodo.completed
+        },  {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
-        }, {
-          completed: nextTodo.completed
-        },  {
-          // withCredentials: true,
         }).then(function (response) {
           // console.log(response)
           setTodos(todos.map(todo => {
