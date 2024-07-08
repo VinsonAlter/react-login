@@ -1,9 +1,14 @@
 import {useState} from 'react'
 
-export default function TaskList({list, toggleTodo, handleChange, deleteList}) {
+export default function TaskList({marginRight, marginLeft, marginY, editClass, deleteClass, saveClass, list, toggleTodo, handleChange, deleteList}) {
     return (
-        <li>
+        <li className={marginY}>
             <Task
+                marginRight={marginRight}
+                marginLeft={marginLeft}
+                editClass={editClass}
+                deleteClass={deleteClass}
+                saveClass={saveClass}
                 list={list}
                 toggleTodo={toggleTodo}
                 handleChange={handleChange}
@@ -17,7 +22,7 @@ export default function TaskList({list, toggleTodo, handleChange, deleteList}) {
     )
 }
 
-function Task({list, toggleTodo, handleChange, onDelete}) {
+function Task({marginLeft, marginRight, editClass, deleteClass, saveClass, list, toggleTodo, handleChange, onDelete}) {
     const [isEditing, setIsEditing] = useState(false)
     const [text, setText] = useState(list.title)
     let content;
@@ -33,7 +38,7 @@ function Task({list, toggleTodo, handleChange, onDelete}) {
                         //     title: e.target.value
                         // })    
                     }></input>
-                <button onClick={() => {
+                <button className={saveClass + ' ' + marginLeft} onClick={() => {
                     handleChange({
                         ...list,
                         title: text
@@ -59,20 +64,20 @@ function Task({list, toggleTodo, handleChange, onDelete}) {
         content = (
             <>
                 {completeList}
-                <button onClick={() => setIsEditing(!isEditing)}>Edit</button>
+                <button className={editClass} onClick={() => setIsEditing(!isEditing)}>Edit</button>
             </>
         )
     }
     return (
         <>
-            <input type="checkbox" checked={list.completed} value={list.id}
+            <input type="checkbox" className={marginRight} checked={list.completed} value={list.id}
                 onChange={() => toggleTodo({
                     ...list,
                     completed: !list.completed
                 })}>
             </input>
             {content}
-            <button onClick={() => onDelete(list.id)}>Delete</button>
+            <button className={deleteClass} onClick={() => onDelete(list.id)}>Delete</button>
         </>
         
     )
